@@ -1,1 +1,5 @@
 env/
+.vscode/
+tests/__pycache__/
+tests/custom/
+queries/theory examples.sql

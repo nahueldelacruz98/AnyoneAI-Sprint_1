@@ -15,4 +15,10 @@ def load(data_frames: Dict[str, DataFrame], database: Engine):
     # use pandas.Dataframe.to_sql() to load the dataframe into the database as a
     # table.
     # For the table name use the `data_frames` dict keys.
-    raise NotImplementedError
+    
+    with database.connect() as db:
+        for db_name, df in data_frames.items():
+            df.to_sql(db_name, con=db.connection)
+            print(f"Loading {db_name} database...")
+
+    #print("end")

@@ -4,6 +4,7 @@ import requests
 import numpy as np
 from pandas import DataFrame, read_csv, read_json, to_datetime
 
+DEFAULT_COUNTRY = "BR"    #Brasil as default country for this exercise
 
 def get_public_holidays(public_holidays_url: str, year: str) -> DataFrame:
     """Get the public holidays for the given year for Brazil.
@@ -18,14 +19,8 @@ def get_public_holidays(public_holidays_url: str, year: str) -> DataFrame:
     Returns:
         DataFrame: A dataframe with the public holidays.
     """
-    # TODO: Implement this function.
-    # You must use the requests library to get the public holidays for the given year.
-    # The url is public_holidays_url/{year}/BR.
-    # You must delete the columns "types" and "counties" from the dataframe.
-    # You must convert the "date" column to datetime.
-    # You must raise a SystemExit if the request fails. Research the raise_for_status
-    # method from the requests library.
-    URL = f"{public_holidays_url}/{year}/BR"
+
+    URL = f"{public_holidays_url}/{year}/{DEFAULT_COUNTRY}"
 
     response = requests.get(URL)
     if response.raise_for_status() != None:
@@ -36,13 +31,10 @@ def get_public_holidays(public_holidays_url: str, year: str) -> DataFrame:
     #remove columns using drop
     df.drop("types", axis=1, inplace=True)
     df.drop("counties", axis=1, inplace=True)
-    #print(df.columns)
-
+    
     #change "date" column type to datetime
     df["date"] = to_datetime(df["date"], format="%Y-%m-%d")
-    #print(df["date"])
 
-    print(df)
     return df
 
 
