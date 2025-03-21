@@ -5,7 +5,8 @@
 -- Year2017, with the revenue per month of 2017 (0.00 if it doesn't exist) and
 -- Year2018, with the revenue per month of 2018 (0.00 if it doesn't exist).
 SELECT 
-(CASE Month_no
+T.month_no,
+(CASE T.month_no
         WHEN '01' THEN 'Jan'
         WHEN '02' THEN 'Feb'
         WHEN '03' THEN 'Mar'
@@ -18,14 +19,14 @@ SELECT
         WHEN '10' THEN 'Oct'
         WHEN '11' THEN 'Nov'
         WHEN '12' THEN 'Dec'
-    END) AS Month_no,
+    END) AS month,
 SUM(CASE WHEN T.Fecha = '2016' THEN T.Payment ELSE 0 END) AS Year2016,
 SUM(CASE WHEN T.Fecha = '2017' THEN T.Payment ELSE 0 END) AS Year2017,
 SUM(CASE WHEN T.Fecha = '2018' THEN T.Payment ELSE 0 END) AS Year2018
 FROM 
 	(
 		SELECT strftime('%Y', oo.order_delivered_customer_date) AS Fecha,
-		strftime('%m', oo.order_delivered_customer_date) AS Month_no,
+		strftime('%m', oo.order_delivered_customer_date) AS month_no,
 		op.payment_value AS Payment
 		FROM olist_orders AS oo 
 		INNER JOIN olist_order_payments AS op ON oo.order_id = op.order_id
@@ -33,4 +34,4 @@ FROM
 		AND oo.order_delivered_customer_date IS NOT NULL
 		GROUP BY oo.order_id 
 	) AS T
-GROUP BY Month_no
+GROUP BY month_no

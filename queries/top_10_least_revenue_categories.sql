@@ -8,8 +8,8 @@
 -- delivery date should be not null.
 
 SELECT Category,
-COUNT(T.OrderId) As Amount,
-SUM(T.Revenue) AS Total
+COUNT(DISTINCT T.OrderId) As Num_order,
+SUM(T.Revenue) AS Revenue
 FROM (
 	SELECT pcnt.product_category_name_english AS Category,
 	oo.order_id AS OrderId,
@@ -23,5 +23,5 @@ FROM (
 	AND oo.order_delivered_customer_date IS NOT NULL
 	) AS T
 GROUP BY Category 
-ORDER BY Total
+ORDER BY Revenue
 LIMIT 10

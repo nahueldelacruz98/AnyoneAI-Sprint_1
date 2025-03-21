@@ -18,7 +18,7 @@ def load(data_frames: Dict[str, DataFrame], database: Engine):
     
     with database.connect() as db:
         for db_name, df in data_frames.items():
-            df.to_sql(db_name, con=db.connection)
+            df.to_sql(db_name, con=db.connection,if_exists='replace')
             print(f"Loading {db_name} database...")
 
     #print("end")

@@ -4,8 +4,8 @@
 -- HINT: All orders should have a delivered status and the actual delivery date 
 -- should be not null. 
 
-SELECT TR.State,
-SUM(TR.Revenue) As SumRevenue
+SELECT TR.State AS customer_state,
+SUM(TR.Revenue) As Revenue
 FROM (
 	select oop.payment_value AS Revenue,
 	oc.customer_state AS State
@@ -15,6 +15,6 @@ FROM (
 	WHERE oo.order_status = 'delivered' 
 	AND oo.order_delivered_customer_date IS NOT NULL
 	) AS TR
-GROUP BY TR.State
-ORDER BY SumRevenue DESC
+GROUP BY customer_state
+ORDER BY Revenue DESC
 LIMIT 10

@@ -9,7 +9,7 @@
 -- 3. You can use the STRFTIME function to convert a order_delivered_customer_date to a string removing hours, minutes and seconds.
 -- 4. order_status == 'delivered' AND order_delivered_customer_date IS NOT NULL
 SELECT oc.customer_state as State,
-CAST(AVG(T.Diff) AS int) AS AverageDiff
+CAST(AVG(T.Diff) AS int) AS Delivery_Difference
 FROM (
 	SELECT JULIANDAY(STRFTIME('%Y-%m-%d', oo.order_estimated_delivery_date)) - JULIANDAY(STRFTIME('%Y-%m-%d', oo.order_delivered_customer_date)) AS Diff,
 	oo.order_status,
@@ -21,4 +21,4 @@ FROM (
 	olist_customers as oc
 WHERE oc.customer_id = T.customer_id
 GROUP By State 
-ORDER BY AverageDiff
+ORDER BY Delivery_Difference
