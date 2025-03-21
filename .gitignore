@@ -3,3 +3,5 @@ env/
 tests/__pycache__/
 tests/custom/
 queries/theory examples.sql
+src/__pycache__/
+tests/__pycache__/
