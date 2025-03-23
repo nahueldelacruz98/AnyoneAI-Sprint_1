@@ -238,8 +238,8 @@ def query_orders_per_day_and_holidays_2017(database: Engine) -> QueryResult:
     # Using the `filtered_dates` DataFrame, count how many orders were made on
     # each day.
     # Assign the result to the `order_purchase_ammount_per_date` variable.
-    order_purchase_ammount_per_date = filtered_dates.groupby(orders["order_purchase_timestamp"].dt.date).size()
-
+    #order_purchase_ammount_per_date = filtered_dates.groupby(orders["order_purchase_timestamp"].dt.date).size()
+    order_purchase_ammount_per_date= filtered_dates.resample(rule="D", on = "order_purchase_timestamp").order_id.count()
     # TODO: Creating a dataframe with the result. Assign it to `result_df` variable.
     # Now we will create the final DataFrame for the output.
     # This DataFrame must have 3 columns:
@@ -248,8 +248,12 @@ def query_orders_per_day_and_holidays_2017(database: Engine) -> QueryResult:
     #   - 'date': the corresponding date for each count of orders.
     #   - 'holiday': boolean column having True when that date is a holiday or,
     #                False otherwise. Use the `holidays` DataFrame for this.
-    result_df = pd.merge(order_purchase_ammount_per_date, holidays, on="order_purchase_timestamp",how='left')
-    result_df['holiday'] = result_df['holiday'].notna()
+
+    result_df = pd.DataFrame({
+     "order_count": order_purchase_ammount_per_date,
+     "date": order_purchase_ammount_per_date.index,
+     "holiday": order_purchase_ammount_per_date.index.isin(pd.to_datetime( holidays["date"] ))
+    })
 
     # Keep the code below as it is, this will return the result from
     # `aggregations` variable with the corresponding name and format.
